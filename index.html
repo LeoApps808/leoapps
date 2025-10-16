@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leo Apps - Equation Quest</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .bubble-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: rise 15s infinite ease-in;
+            backdrop-filter: blur(5px);
+        }
+
+        @keyframes rise {
+            0% {
+                bottom: -100px;
+                transform: translateX(0) scale(1);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                bottom: 110%;
+                transform: translateX(100px) scale(1.3);
+                opacity: 0;
+            }
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            padding: 2rem;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #f093fb, #f5576c, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: #feca57;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .app-icon {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #feca57;
+        }
+
+        .description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            box-shadow: 0 8px 20px rgba(245, 87, 108, 0.4);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            margin: 0.5rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(245, 87, 108, 0.6);
+        }
+
+        .features {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #feca57;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            margin-top: 4rem;
+        }
+
+        .social-links {
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            color: #feca57;
+            text-decoration: none;
+            margin: 0 1rem;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #f5576c;
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .description {
+                font-size: 1rem;
+                padding: 1.5rem;
+            }
+
+            .app-icon {
+                width: 120px;
+                height: 120px;
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bubble-container" id="bubbleContainer"></div>
+    
+    <div class="content">
+        <header>
+            <div class="logo">Leo Apps</div>
+            <div class="tagline">Crafting Mathematical Adventures</div>
+        </header>
+
+        <section class="hero">
+            <div class="app-icon">🧮</div>
+            <h1>Equation Quest</h1>
+            <p class="subtitle">Master Math Through Epic Adventures</p>
+            <div class="description">
+                Embark on an extraordinary journey where solving equations unlocks new worlds! 
+                Equation Quest transforms mathematics into an engaging adventure game that makes 
+                learning fun and addictive. Battle through challenging levels, collect rewards, 
+                and become a math master while having the time of your life.
+            </div>
+            <a href="#" class="cta-button">Download Now</a>
+            <a href="#features" class="cta-button" style="background: linear-gradient(45deg, #4facfe, #00f2fe);">Learn More</a>
+        </section>
+
+        <section class="features" id="features">
+            <h2>✨ Amazing Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3>Gamified Learning</h3>
+                    <p>Turn complex equations into exciting quests and challenges that keep you engaged for hours.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Progressive Difficulty</h3>
+                    <p>Start with basics and advance to complex problems at your own pace with adaptive learning.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3>Achievements & Rewards</h3>
+                    <p>Unlock badges, collect power-ups, and compete on leaderboards with players worldwide.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Beautiful Design</h3>
+                    <p>Enjoy stunning visuals and smooth animations that make every equation exciting to solve.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Comprehensive Topics</h3>
+                    <p>Cover algebra, geometry, calculus, and more with thousands of carefully crafted problems.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3>Hint System</h3>
+                    <p>Get helpful hints when stuck, with step-by-step solutions to help you understand concepts.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 Leo Apps. All rights reserved.</p>
+            <p style="margin-top: 1rem;">Made with ❤️ by an indie developer passionate about education</p>
+            <div class="social-links">
+                <a href="#">Contact</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Support</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const bubbleContainer = document.getElementById('bubbleContainer');
+        const colors = ['rgba(240, 147, 251, 0.15)', 'rgba(245, 87, 108, 0.15)', 'rgba(254, 202, 87, 0.15)', 'rgba(79, 172, 254, 0.15)'];
+
+        function createBubble() {
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            
+            const size = Math.random() * 100 + 50;
+            bubble.style.width = size + 'px';
+            bubble.style.height = size + 'px';
+            
+            bubble.style.left = Math.random() * 100 + '%';
+            bubble.style.background = colors[Math.floor(Math.random() * colors.length)];
+            
+            const duration = Math.random() * 10 + 10;
+            bubble.style.animationDuration = duration + 's';
+            
+            bubble.style.animationDelay = Math.random() * 5 + 's';
+            
+            bubbleContainer.appendChild(bubble);
+            
+            setTimeout(() => {
+                bubble.remove();
+            }, (duration + 5) * 1000);
+        }
+
+        for (let i = 0; i < 15; i++) {
+            createBubble();
+        }
+
+        setInterval(() => {
+            if (bubbleContainer.children.length < 20) {
+                createBubble();
+            }
+        }, 2000);
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
